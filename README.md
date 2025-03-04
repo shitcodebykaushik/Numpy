@@ -22,3 +22,5 @@ Before NumPy, Python's built-in lists were inefficient for handling numerical co
 
 ## Conclusion
 NumPy has played a crucial role in the advancement of data science and machine learning by providing a high-performance numerical computing foundation. Its journey from Numeric and numarray to becoming an indispensable tool in scientific computing showcases its importance in the Python ecosystem. Today, NumPy continues to evolve with ongoing contributions from a vibrant open-source community.
+- `myenv/bin/activate` always  to activate the file 
+- `source myenv/bin/activate` to create the virtual environmnet .
