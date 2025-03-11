@@ -3,7 +3,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 url = "http://localhost:8081/IQBAL"
-total_requests = 1
+total_requests = 1000000
 concurrency = 100
 
 def send_request():
