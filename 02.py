@@ -1,43 +1,31 @@
-import time
-import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import PyPDF2
+import re
 
-url = "http://localhost:8081/IQBAL"
-total_requests = 1000000
-concurrency = 100
+# Path to your PDF file
+pdf_file_path = '04.pdf'
 
-def send_request():
-    start_time = time.time()
-    try:
-        response = requests.get(url)
-        status_code = response.status_code
-    except Exception as e:
-        status_code = f"Error: {e}"
-    duration = time.time() - start_time
-    return status_code, duration
+# Function to extract text from the PDF
+def extract_text_from_pdf(pdf_file_path):
+    with open(pdf_file_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        text = ''
+        for page_num in range(len(reader.pages)):
+            page = reader.pages[page_num]
+            text += page.extract_text()
+    return text
 
-def main():
-    total_duration = 0.0
-    results = []
-    with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        futures = [executor.submit(send_request) for _ in range(total_requests)]
-        for i, future in enumerate(as_completed(futures), start=1):
-            status_code, duration = future.result()
-            total_duration += duration
-            results.append(status_code)
-            if i % 10000 == 0:
-                print(f"{i} requests completed.")
-    average_duration = total_duration / total_requests
-    print("Completed all requests.")
-    print(f"Average request time: {average_duration:.4f} seconds")
-    
-    # Optionally, print a summary of status codes
-    status_summary = {}
-    for status in results:
-        status_summary[status] = status_summary.get(status, 0) + 1
-    print("Status Code Summary:")
-    for code, count in status_summary.items():
-        print(f"{code}: {count}")
+# Function to calculate the total kpm
+def calculate_total_kpm(text):
+    # Regular expression to extract kpm values
+    kpm_values = re.findall(r'kpm (\d+)', text)
+    kpm_values = [int(kpm) for kpm in kpm_values]
+    total_kpm = sum(kpm_values)
+    return total_kpm
 
-if __name__ == "__main__":
-    main()
+# Extract text from PDF
+text = extract_text_from_pdf(pdf_file_path)
+
+# Calculate total kpm
+total_kpm = calculate_total_kpm(text)
+
+print(f"Total kpm (sum of kpm values): {total_kpm}")
