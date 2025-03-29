@@ -5,8 +5,7 @@ from reportlab.pdfgen import canvas
 file_path = "logs.txt"
 
 # List of names to search for
-search_terms = ["Shaun", "saddex", "Shreyas Malhotra", "shreyas-malhotra", 
-                "Sukriti", "suk", "Avishek", "avishek raj singh"]
+search_terms = [ "Shreyas Malhotra"]
 
 # Open the file and search for the terms line by line
 with open(file_path, "r", encoding="utf-8") as file:
